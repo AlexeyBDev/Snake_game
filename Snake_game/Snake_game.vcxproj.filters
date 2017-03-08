@@ -21,6 +21,12 @@
     <ClCompile Include="snakeFunction.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="frameStruct.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="foodFunction.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="snakeStruct.h">
@@ -33,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pointStruct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="foodFunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

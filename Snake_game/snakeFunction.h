@@ -10,20 +10,12 @@
 #include <time.h>
 #include <stdbool.h>
 #include <windows.h>
+
 #include "snakeStruct.h"
 //--------------------------------------------------------------
 
 // Макросы
-// параметры ограничивающей рамки
-#define START_POINT_FRAME_X 0				// начальная точка рамки (X)
-#define START_POINT_FRAME_Y 1				// начальная точка рамки (Y)
-#define FRAME_X 60							// размер рамки по x
-#define FRAME_Y 20							// размер рамки по y
-#define NODE_FRAME '+'						// символ в углах рамки '+'
-#define HORIZONT_LINE_FRAME '-'				// символ горизонтальной линии рамки '-'
-#define VERTICAL_LINE_FRAME '|'				// символ вертикальной линии рамки '|'
-#define EMPTY_SYMBOL_FRAME ' '				// пустой символ рамки ' '
-#define NEW_LINE_FRAME '\n'					// символ начало отрисовки новой линии
+
 // параметры змеи
 #define HEAD_SNAKE '@'						// символ головы змеи
 #define BODY_SNAKE 'o'						// символ тела змеи 'o'
@@ -44,13 +36,11 @@
 //--------------------------------------------------------------
 
 // функции
-void drawFrame(int, int);					// функция отрисовки ограничивающей рамки
-void gotoxy(snakeElement);						// функция перемещения курсора по заданным координатам
-int startDirection(void);					// функция генерации начального направления
-void newSnake(snakeElement *, int leight, int direction);		// функция начальной генерации тела змеи
-snakeElement stepSnake(int direction, snakeElement head);		// функция генерации шага змеи
-bool snakeCrash(snakeElement position);							// функция определения столкновения змеи с рамкой
-foodPosition foodGenerator(snakeElement *Snake, int longSnake);					// генератор еды
-bool crashWithItSelf(snakeElement *Snake, int longSnake);
+void moveTo(position);									// перемещение в заданное положение
+int startDirectionSnake(void);							// генерация начального направления хода змейки
+snakeElement* snakeInit(int leight);							// создание змеи
+void stepSnake(snakeElement *Snake, int direction, int longSnake);		// функция генерации шага змеи
+bool snakeCrash(snakeElement *Snake);									// функция определения столкновения змеи с рамкой
+bool crashWithItSelf(snakeElement *Snake, int longSnake);				// проверка на самопересечение
 
 #endif

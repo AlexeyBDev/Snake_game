@@ -1,5 +1,6 @@
 #include "snakeFunction.h"
 #include "snakeStruct.h"
+#include "frameStruct.h"
 
 //snakeElement startPointFrame = { START_POINT_FRAME_X,// точка старта отрисовку рамки
 //START_POINT_FRAME_Y };
@@ -8,10 +9,39 @@
 //snakeElement pointForEndStatistic = { 0,		// точка вывода статистики во время работы программы
 //START_POINT_FRAME_Y + FRAME_Y + 1 };
 
+//-----------------------------------------------------------------
 // реализация функций
 
-void newSnake(snakeElement *Snake, int leight, int direction)
+// единичное перемешение позиции в заданное положение
+void moveTo(position point)
 {
+	COORD currentPos = { point.x, point.y };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), currentPos);
+}
+
+// генерация начального направления хода змейки
+int startDirectionSnake(void)
+{
+	DWORD nStartValue = time(NULL);
+	srand(nStartValue);
+	int direction;
+	direction = rand() % 4;						// генерация случайного направления
+
+	switch (direction) {
+	case 0: return LEFT;
+	case 1: return RIGHT;
+	case 2: return UP;
+	case 3: return DOWN;
+	default: return UP;
+	}
+}
+
+// создание змейки
+snakeElement* snakeInit(int leight)
+{
+	static snakeElement Snake[SNAKE_MAX_SIZE]; // создание змеи
+	int direction = startDirectionSnake();
+
 	Snake[0].x = START_POINT_X;
 	Snake[0].y = START_POINT_Y;
 
@@ -46,113 +76,52 @@ void newSnake(snakeElement *Snake, int leight, int direction)
 			Snake[i].x = START_POINT_X;
 			Snake[i].y = START_POINT_Y + i;
 		} break;
-	}
-}
+	} // switch
+	return Snake;
+} // snakeInit
 
-int startDirection(void)							// функция генерации начального направления
+
+// перемещение змейки
+void stepSnake(snakeElement *Snake, int direction, int longSnake)		// функция генерации шага змеи
 {
-	DWORD nStartValue = time(NULL);
-	srand(nStartValue);
-	int direction;
-	direction = rand() % 4;						// генерация случайного направления
-
+	//snakeElement step;
 	switch (direction) {
-	case 0: return LEFT;
-	case 1: return RIGHT;
-	case 2: return UP;
-	case 3: return DOWN;
-	default: return UP;
+	case LEFT:	Snake->x = -1 + Snake->x;					// лево (был код 75)
+				Snake->y = 0 + Snake->y;
+		break;
+	case RIGHT: Snake->x = 1 + Snake->x;					// право (был код - 77)
+				Snake->y = 0 + Snake->y;
+		break;
+	case UP:	Snake->x = 0 + Snake->x;					// верх (был код - 72)
+				Snake->y = -1 + Snake->y;
+		break;
+	case DOWN:	Snake->x = 0 + Snake->x;					// низ (был код - 80)
+				Snake->y = 1 + Snake->y;
+		break;
+	default:	Snake->x = 0 + Snake->x;
+				Snake->y = 0 + Snake->y;
+		break;
 	}
-}
-
-snakeElement stepSnake(int direction, snakeElement head)					// функция генерации шага змеи
-{
-	snakeElement step;
-	switch (direction) {
-	case LEFT:	step.x = -1 + head.x;					// лево (был код 75)
-		step.y = 0 + head.y;
-		return step;
-	case RIGHT: step.x = 1 + head.x;					// право (был код - 77)
-		step.y = 0 + head.y;
-		return step;
-	case UP:	step.x = 0 + head.x;					// верх (был код - 72)
-		step.y = -1 + head.y;
-		return step;
-	case DOWN:	step.x = 0 + head.x;					// низ (был код - 80)
-		step.y = 1 + head.y;
-		return step;
-	default:	step.x = 0 + head.x;
-		step.y = 0 + head.y;
-		return step;
-	}
-}
-
-void drawFrame(int x, int y)
-{
-	/*  o----> X
-	|
-	|
-	Y       */
-	printf("Змейка! Поехали.......");									//
-	gotoxy(startPointFrame);					// начало отрисовки рамки
-	for (int i = 0; i <= y; i++)
+	for (int i = longSnake - 1; i > 0; i--)						// перемещение тела змеи в новое состояние
 	{
-		for (int j = 0; j <= x; j++)
-		{
-			if (i == 0 || i == y)
-			{
-				if (j == 0 || j == x) putchar(NODE_FRAME);				// отрисовка узвол рамки
-				else putchar(HORIZONT_LINE_FRAME);						// отрисовка горизонтальной линии
-			}
-			else
-			{
-				if (j == 0 || j == x) putchar(VERTICAL_LINE_FRAME);		// отрисовка вертикальной линии
-				else putchar(EMPTY_SYMBOL_FRAME);						// отрисовка пустоты
-			}
-			if (j == x) putchar(NEW_LINE_FRAME);
-		}
+		Snake[i] = Snake[i - 1];
 	}
 }
 
-void gotoxy(snakeElement step)
+
+// функция определения столкновения змеи с рамкой
+bool snakeCrash(snakeElement *Snake)						
 {
-	COORD position = { step.x, step.y };
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
+	if (Snake[0].x <= START_POINT_FRAME_X || Snake[0].x >= START_POINT_FRAME_X + FRAME_X ||
+		Snake[0].y <= START_POINT_FRAME_Y || Snake[0].y >= START_POINT_FRAME_Y + FRAME_Y) 
+		return true; // столкнулась
+	else 
+		return false; // нет
 }
 
-bool snakeCrash(snakeElement position)						// функция определения столкновения змеи с рамкой
-{
-	if (position.x <= START_POINT_FRAME_X || position.x >= START_POINT_FRAME_X + FRAME_X ||
-		position.y <= START_POINT_FRAME_Y || position.y >= START_POINT_FRAME_Y + FRAME_Y) return true;
-	else return false;
-}
 
-foodPosition foodGenerator(snakeElement *Snake, int longSnake)								// генератор еды
-{
-	foodPosition food;
-	DWORD nStartValue = time(NULL);
-	srand(nStartValue);
-	int food_x, food_y;
-	food.x = START_POINT_FRAME_X + rand() % (FRAME_X - 2) + 1;				// генерация положения еды в рамке
-	food.y = START_POINT_FRAME_Y + rand() % (FRAME_Y - 2) + 1;				// -2 - уменьшение диапазона чтобы не попало на рамки
-																			// +1 - смещение относительно начало
-																			// проверка на совпадение положения еды с положением самой змеи
-																			// если попало на змею, генерируем заново
-	for (int i = 0; i < longSnake; i++) {
-		if (food.x == Snake[i].x && food.y == Snake[i].y)
-		{
-			food = foodGenerator(Snake, longSnake);							// если совпало, то вызываем повторно
-			gotoxy(food);
-			putchar(FOOD); // отрисовка еды
-			return food;
-		}
-	}
-	gotoxy(food);
-	putchar(FOOD);											// отрисовка еды
-	return food;
-}
-
-bool crashWithItSelf(snakeElement *Snake, int longSnake) {		// проверка змеи на столкновение с самой собой
+// проверка змеи на столкновение с самой собой
+bool crashWithItSelf(snakeElement *Snake, int longSnake) {		
 	for (int i = 1; i < longSnake; i++)
 	{
 		if (Snake[0].x == Snake[i].x && Snake[0].y == Snake[i].y)

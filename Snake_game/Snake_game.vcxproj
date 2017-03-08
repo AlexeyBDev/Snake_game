@@ -142,10 +142,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="foodFunction.c" />
+    <ClCompile Include="frameStruct.c" />
     <ClCompile Include="snake.c" />
     <ClCompile Include="snakeFunction.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="foodFunction.h" />
     <ClInclude Include="frameStruct.h" />
     <ClInclude Include="pointStruct.h" />
     <ClInclude Include="snakeFunction.h" />

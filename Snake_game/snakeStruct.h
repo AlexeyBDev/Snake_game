@@ -2,14 +2,11 @@
 #define SNAKE_STRUCT_H
 
 #include "pointStruct.h"
-// Определение псевдонимов
-
-// псевдоним структуры описывающий элемент змейки
+//---------------------------------------------------------
+// псевдоним структуры описывающий положение элемента змейки
 typedef struct PointXY snakeElement;
-// псевдоним структуры описывающий еду
-typedef struct PointXY foodPosition;
-
-
+// псевдоним структуры описывающей положение 
+typedef struct PointXY position;
 
 #endif
 

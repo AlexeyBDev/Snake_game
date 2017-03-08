@@ -7,8 +7,11 @@
 
 #include "snakeStruct.h"
 #include "snakeFunction.h"
+#include "frameStruct.h"
+#include "foodFunction.h"
 
-extern snakeElement startPointFrame;
+//#define OPEN_GL_SNAKE_MODE					// сборка проекта в OpenGL
+//extern snakeElement startPointFrame;
 
 
 						// проверка змеи на столкновение с самой собой
@@ -18,22 +21,20 @@ int main()
 	system("color 1E");						// Установка синего фона и желтого текста
 	setlocale(LC_CTYPE, "rus");
 
-	drawFrame(FRAME_X, FRAME_Y);			// нарисовать рамку
+	frameInit();							// приглашение начать игру и отрисовка рамки
 
-	int key = startDirection(),				// генерация начального значения направления хода змеи
-		prevKey;
+	int key, prevKey;			// текущая клавиша направления и предыдущая
+
 	int speed = SLEEP;						// начальная скорость змеи
-	snakeElement Snake[SNAKE_MAX_SIZE];		// массив тела змеи
 
 	int longSnake = SNAKE_SIZE;						// longSnake - текущий размер змеи
-
-	newSnake(Snake, SNAKE_SIZE, key);				// функция генерации начального тела змеи
+	snakeElement* Snake = snakeInit(longSnake);		// массив тела змеи
+	
 	foodPosition food;
 	food = foodGenerator(Snake, longSnake);							// генерация еды для змеи
 
-	gotoxy(pointForEndStatistic);									// перевод курсора в точку вывода статистики
-	printf("Текущая скорость: %d  Размер змеи: %d\n", 
-		SLEEP / speed, longSnake);									// вывод статистики
+	consolPrintStatistic(SLEEP / speed, longSnake);					// вывод статистики
+			
 
 	while (true) // основной цикл программы
 	{

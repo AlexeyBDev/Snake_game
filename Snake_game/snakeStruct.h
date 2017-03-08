@@ -8,8 +8,7 @@
 typedef struct PointXY snakeElement;
 // псевдоним структуры описывающий еду
 typedef struct PointXY foodPosition;
-// псевдоним структуры описывающий положение рамки
-typedef struct PointXY framePos;
+
 
 
 #endif

@@ -26,6 +26,7 @@ void consolCursoreMove(framePosition);						// функция перемещения курсора по за
 void consolInvitation(void);								// вывод в консоль приветствия в начале игры
 void consolDrawFrame(int width, int height);				// функция отрисовки ограничивающей рамки
 void frameInit();											// функция инициализации рамки
-void consolPrintStatistic(int speed, int size);					// вывод скорости и размера змеи
+void consolPrintStatistic(int speed, int size);				// вывод скорости и размера змеи в консоль
+void consolPrintMsg(const char* msg);						// вывод сообщения в консоль
 
 #endif

@@ -3,7 +3,9 @@
 
 #include "pointStruct.h"
 #include "snakeStruct.h"
-#include "snakeFunction.h"
+//#include "snakeFunction.h"
+
+#define FOOD '*'							// символ еды
 //---------------------------------------------------------
 // псевдоним структуры описывающий еду
 typedef struct PointXY foodPosition;
@@ -18,6 +20,6 @@ foodPosition foodGenerator(snakeElement *Snake, int longSnake);
 // возвращает координаты еды
 
 // отрисовка еды в консоли
-void consolDrawFood(snakeElement *Snake, int longSnake);
+foodPosition consolDrawFood(snakeElement *Snake, int longSnake);
 #endif
 

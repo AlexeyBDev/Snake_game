@@ -1,5 +1,6 @@
 #include <Windows.h>
 #include <time.h>
+#include <stdio.h>
 #include "foodFunction.h"
 #include "frameStruct.h"
 
@@ -30,9 +31,10 @@ foodPosition foodGenerator(snakeElement *Snake, int longSnake)
 }
 
 // функция отрисовки еды в консоли
-void consolDrawFood(snakeElement *Snake, int longSnake)
+foodPosition consolDrawFood(snakeElement *Snake, int longSnake)
 {
 	foodPosition food = foodGenerator(Snake, longSnake);
 	moveTo(food);
 	putchar(FOOD);											// отрисовка еды
+	return food;
 }

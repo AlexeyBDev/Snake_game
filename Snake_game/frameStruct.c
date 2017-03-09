@@ -62,6 +62,7 @@ void frameInit()
 	consolDrawFrame(FRAME_X, FRAME_Y);
 }
 
+// вывод скорости и размера змеи в консоль
 void consolPrintStatistic(int speed, int size)
 {
 	// точка вывода завершающей надписи по окончании программы
@@ -69,5 +70,16 @@ void consolPrintStatistic(int speed, int size)
 	consolCursoreMove(pointForEndStatistic);						// перевод курсора в точку вывода статистики
 	printf("Текущая скорость: %d  Размер змеи: %d\n",
 		 speed, size);												// вывод статистики
+}
+
+// вывод сообщения в консоль
+void consolPrintMsg(const char* msg)
+{
+	// точка вывода завершающей надписи по окончании программы
+	framePosition pointForEndMessage = { 0,	START_POINT_FRAME_Y + FRAME_Y + 1 };
+	consolCursoreMove(pointForEndMessage);
+	printf(msg);
+	framePosition end = { 0,	START_POINT_FRAME_Y + FRAME_Y + 3 };
+	consolCursoreMove(end);
 }
 #endif

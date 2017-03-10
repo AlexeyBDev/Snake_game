@@ -17,28 +17,28 @@
 //extern snakeElement startPointFrame;
 
 
-						// проверка змеи на столкновение с самой собой
 
 int main()
 {
-	system("color 1E");						// Установка синего фона и желтого текста
+	// Установка синего фона и желтого текста
+	system("color 1E");						
 	setlocale(LC_CTYPE, "rus");
-
-	frameInit();							// приглашение начать игру и отрисовка рамки
-
-	int key, prevKey;			// текущая клавиша направления и предыдущая
+	// приглашение начать игру и отрисовка рамки
+	frameInit();							
+	// текущая клавиша направления и предыдущая
+	int key, prevKey;			
 	key = startDirectionSnake();
-
-	int speed = SLEEP;						// начальная скорость змеи
+	// начальная скорость змеи
+	int speed = SLEEP;						
 
 	int longSnake = SNAKE_SIZE;						// longSnake - текущий размер змеи
 	snakeElement* Snake = snakeInit(longSnake);		// массив тела змеи
 	consolDrawSnake(Snake, longSnake);				// отрисовка змеи
-
+	// генерация еды для змеи
 	foodPosition food;
-	food = consolDrawFood(Snake, longSnake);							// генерация еды для змеи
-
-	consolPrintStatistic(SLEEP / speed, longSnake);					// вывод статистики
+	food = consolDrawFood(Snake, longSnake);							
+	// вывод статистики по игре
+	consolPrintStatistic(SLEEP / speed, longSnake);					
 			
 	// основной цикл программы
 	while (true) 
@@ -54,24 +54,7 @@ int main()
 			break;
 		}
 		
-
-		if (takeFood(Snake, food)) {				// если положение головы совпало с положением еды
-			longSnake++;												// увеличение змеи на один сектор
-			food = consolDrawFood(Snake, longSnake - 1);					// генерация новой еды для змеи
-			speed = SLEEP / (longSnake / SNAKE_SIZE);					// увеличение скорости при росте змеи
-			consolPrintStatistic(SLEEP / speed, longSnake);				// вывод статистики
-		}
-		// проверка food
-		// printf("%d %d\n", food.x, food.y);
-
-		//gotoxy(Snake[0]);												// перемещение курсора в первых сектор змеи
-		//putchar(HEAD_SNAKE);											// отрисовка головы змеи
-		//for (int i = 1; i < longSnake; i++)
-		//{
-		//	gotoxy(Snake[i]);
-		//	putchar(BODY_SNAKE);
-		//	gotoxy(Snake[i]);
-		//}
+		// проверка нажатия клавиши управления
 		if (kbhit() != false)
 		{
 			prevKey = key;
@@ -81,34 +64,32 @@ int main()
 				break; 
 			}
 			if (key == 224) key = getch();				// повторный вызов т.к. первоначально стрелки возвращают E0
-			// отладка
-			/*gotoxy(pointForEndMessage);
-			printf("%d\t%x", key, key);*/
+
 			if (key == RIGHT && prevKey == LEFT) key = LEFT;	// змея не может ползти через себя
 			if (key == LEFT && prevKey == RIGHT ) key = RIGHT;
 			if (key == DOWN && prevKey == UP) key = UP;
 			if (key == UP && prevKey == DOWN) key = DOWN;
 			
 		}
-		//gotoxy(Snake[0]);										// перевод курсора в голову змеи
 
 		if (key == LEFT || key == RIGHT) Sleep(speed);			// задержка времени
 		else Sleep(speed * DIFF_SPEEDS);						// скорость между строками медленнее в DIFF_SPEEDS раз						
-		
-		//gotoxy(Snake[longSnake - 1]);							// уход курсора в последний сектор замеи
-		//putchar(EMPTY_SPACE);									// отрисовка пустоты
-		consolClearTail(Snake, longSnake);
+		// стирание последнего элемента змеи									
+		consolClearTail(Snake, longSnake);						
+	
+		// если положение головы совпало с положением еды
+		if (takeFood(Snake, food)) {				
+			longSnake++;												// увеличение змеи на один сектор
+			food = consolDrawFood(Snake, longSnake - 1);					// генерация новой еды для змеи
+			speed = SLEEP / (longSnake / SNAKE_SIZE);					// увеличение скорости при росте змеи
+			consolPrintStatistic(SLEEP / speed, longSnake);				// вывод статистики
+		}
 
-		//for (int i = longSnake - 1; i > 0; i--)						// перемещение тела змеи в новое состояние
-		//{
-		//	Snake[i] = Snake[i - 1];
-		//}
-
-		//Snake[0] = stepSnake(key, Snake[0]);
-		
-		// отрисовка нового положения головы змеи
+		// следующий шаг змеи
 		stepSnake(Snake, key, longSnake);
 		consolDrawSnake(Snake, longSnake);
 	} // end while
+	system("pause");
+	return 0;
 } // end main
 

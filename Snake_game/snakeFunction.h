@@ -20,7 +20,7 @@
 
 // параметры змеи
 #define HEAD_SNAKE '@'						// символ головы змеи
-#define BODY_SNAKE 'o'						// символ тела змеи 'o'
+#define BODY_SNAKE 's'						// символ тела змеи 'o'
 #define SNAKE_SIZE 4						// начальная длинна змеи
 #define SNAKE_MAX_SIZE 40					// максимальный рамер змеи
 #define EMPTY_SPACE ' '						// пустая позиция с которой ушла змея (пробел)
